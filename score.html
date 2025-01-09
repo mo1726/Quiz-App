@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="style.css">
+      <style>
+      /* General Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Body Styles */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        padding: 20px;
+        color: #333;
+      }
+
+      /* Header */
+      h1 {
+        font-size: 2.5rem;
+        color: #083809;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      p{
+        color: #0056b3;
+        font-size: 2rem;
+      }
+
+      /* Score Message */
+      #scoreMessage {
+        font-size: 1.2rem;
+        color: #555;
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      /* Button Styling */
+      #anotherQuizBtn,#reset {
+        background-color: #007BFF;
+        color: white;
+        padding: 12px 25px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 30px;
+        transition: background-color 0.3s ease;
+      }
+
+      #anotherQuizBtn,#reset:hover {
+        background-color: #0056b3;
+      }
+
+      #anotherQuizBtn,#reset:focus {
+        outline: none;
+      }
+
+      /* Container */
+      .container {
+        background-color: transparent;
+       
+        padding: 30px;
+        
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Quiz App!</h1>
+        <p id="scoreMessage"></p>
+        <button id="anotherQuizBtn">Take Another Quiz</button>
+        <button id="reset">Reset Score</button>
+    </div>
+
+    <script>
+        let storedUserName = localStorage.getItem("Username");
+        let quizScore = localStorage.getItem("quizScore");
+
+        if (storedUserName && quizScore) {
+            document.getElementById("scoreMessage").textContent = `Welcome back, ${storedUserName}! Your quiz score is ${quizScore}.`;
+        } else {
+            document.getElementById("scoreMessage").textContent = "Welcome, Guest! Please complete a quiz to see your score.";
+        }
+
+        document.getElementById("anotherQuizBtn").addEventListener("click", function () {
+            window.location.href = "welcome.html";
+        });
+
+        document.getElementById("reset").addEventListener("click", function () {
+            localStorage.removeItem("quizScore");
+            window.location.href = "welcome.html";
+        });
+    </script>
+</body>
+</html>

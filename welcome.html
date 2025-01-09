@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <img src="assest/Logo.png" alt="logo" />
+        <h1 id="greeting"></h1>
+        <div class="quiz-container">
+            <select id="categorySelect">
+                <option value="">Select a Category</option>
+            </select>
+            <select id="NumberOfQuestions">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+            </select>
+            <select id="difficultySelect">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+        <button id="GoBtn">Go</button>
+    </div>
+
+    <script>
+        fetch("https://opentdb.com/api_category.php")
+            .then((response) => response.json())
+            .then((data) => {
+                const categories = data.trivia_categories;
+                const categorySelect = document.getElementById("categorySelect");
+
+                categories.forEach((category) => {
+                    const option = document.createElement("option");
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
+
+                const arabicCategory = {
+                    id: "22",
+                    name: "Arabic Quiz",
+                };
+                const arabicOption = document.createElement("option");
+                arabicOption.value = arabicCategory.id;
+                arabicOption.textContent = arabicCategory.name;
+                categorySelect.appendChild(arabicOption);
+            })
+            .catch((error) => console.error("Error fetching categories:", error));
+
+        let storedUserName = localStorage.getItem("Username");
+        let quizScore = localStorage.getItem("quizScore");
+
+        if (storedUserName && quizScore) {
+            document.getElementById("greeting").textContent = `Welcome back, ${storedUserName}! Your quiz score is ${quizScore}.`;
+        } else if (storedUserName) {
+            document.getElementById("greeting").textContent = `Welcome, ${storedUserName}!`;
+        } else {
+            document.getElementById("greeting").textContent = "Hello, Guest!";
+        }
+
+        document.getElementById("GoBtn").addEventListener("click", function () {
+            const category = document.getElementById("categorySelect").value;
+            const numberOfQuestions = document.getElementById("NumberOfQuestions").value;
+            const difficulty = document.getElementById("difficultySelect").value;
+
+            fetch(
+                `https://opentdb.com/api.php?amount=${numberOfQuestions}&category=${category}&difficulty=${difficulty}&type=multiple&lang=ar`
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    localStorage.setItem("Questions", JSON.stringify(data.results));
+                    window.location.href = "quiz.html";
+                    console.log(data.results);
+                })
+                .catch((error) => console.error('Error fetching questions:', error));
+        });
+    </script>
+</body>
+</html>

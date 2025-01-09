@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <img src="assest/Logo.png" alt="Logo">
+        <div class="content">
+            <form action="welcome.html">
+                <label for="name">Username</label>
+                <input type="text" id="Username" name="name" required>
+                <button id="btn">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let btn = document.getElementById("btn");
+        btn.addEventListener("click", function() {
+            let userName = document.getElementById("Username").value;
+            localStorage.setItem("Username", userName);
+            window.location.href = "welcome.html";
+        });
+    </script>
+</body>
+</html>

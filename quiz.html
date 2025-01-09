@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <img src="assest/Logo.png" alt="logo">
+    <div class="container-quiz">
+        <div class="container-quiz-contant">
+            <div id="quizQuestion"></div>
+            <button id="nextBtn">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const quizQuestions = JSON.parse(localStorage.getItem("Questions"));
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        if (quizQuestions && quizQuestions.length > 0) {
+            displayQuestion(currentQuestionIndex);
+        } else {
+            document.getElementById("quizQuestion").innerHTML = "<p>No questions available at the moment.</p>";
+        }
+
+        function displayQuestion(index) {
+            const question = quizQuestions[index];
+            const quizContainer = document.getElementById("quizQuestion");
+
+            let quizHTML = `
+                <div class="question">
+                    <p>${index + 1}. ${question.question}</p>
+                    ${question.incorrect_answers.concat(question.correct_answer).map((option) => `
+                        <label>
+                            <input type="radio" name="q${index}" value="${option}" required/> ${option}
+                        </label><br />
+                    `).join('')}
+                </div>
+            `;
+
+            quizContainer.innerHTML = quizHTML;
+        }
+
+        document.getElementById("nextBtn").addEventListener("click", function () {
+            const selectedOption = document.querySelector(`input[name="q${currentQuestionIndex}"]:checked`);
+
+            if (selectedOption && selectedOption.value === quizQuestions[currentQuestionIndex].correct_answer) {
+                score++;
+            }
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < quizQuestions.length) {
+                displayQuestion(currentQuestionIndex);
+            } else {
+                localStorage.setItem("quizScore", score);
+                window.location.href = "score.html";
+            }
+        });
+    </script>
+</body>
+</html>
